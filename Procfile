@@ -1,0 +1,1 @@
+web: gunicorn Brex1.wsgi
