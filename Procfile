@@ -1,1 +1,1 @@
-web: gunicorn Brex1.wsgi
+web: gunicorn Brex1.wsgi:application --bind 0.0.0.0:$PORT
