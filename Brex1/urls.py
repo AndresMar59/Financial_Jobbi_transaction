@@ -7,7 +7,7 @@ def health_check(request):
     return HttpResponse("OK", content_type="text/plain")
 
 urlpatterns = [
-    path('', health_check), # <-- Añade esta línea para la raíz "/"
+    path('health/', health_check), # <-- Añade esta línea para la raíz "/"
     path('admin/', admin.site.urls),
     path('api/webhooks/', include('webhooks.urls')),
 ]
