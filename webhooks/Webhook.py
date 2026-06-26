@@ -18,7 +18,7 @@ def registrar_nuestro_webhook():
         ]
     }
 
-    mi_llave_idempotente = "mi-llave-registro-webhook-v2"
+    mi_llave_idempotente = "mi-llave-registro-webhook-v5"
     
     client = BrexClient()
     client.headers["Idempotency-Key"] = mi_llave_idempotente
