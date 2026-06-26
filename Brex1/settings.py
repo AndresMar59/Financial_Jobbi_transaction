@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Clients.apps.ClientsConfig', # Agrega tu app de clientes
+    'webhooks.apps.WebhooksConfig'
 ]
 
 MIDDLEWARE = [
@@ -134,3 +136,20 @@ else:
 
     }
 }   
+ 
+# settings.py
+
+# El "Backend" es el motor que envía el correo
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Configuración del servidor de salida
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True  # Para seguridad
+
+# Tus credenciales
+EMAIL_HOST_USER = 'andres@jobbi.me' #Correo mio
+EMAIL_HOST_PASSWORD = 'gjlc ttjw duys ynkq' # ¡Ojo aquí!
+
+# Quién aparece como remitente
+DEFAULT_FROM_EMAIL = 'Sistema de Alertas <andres@jobbi.me>'
