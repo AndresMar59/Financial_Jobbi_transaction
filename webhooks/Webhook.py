@@ -8,7 +8,7 @@ from Clients.Brex import BrexClient
 
 def registrar_nuestro_webhook():
     # 1. Tu URL pública de Ngrok apuntando a tu endpoint de Django
-    url_ngrok = "https://affront-shadow-skinny.ngrok-free.dev/api/webhooks/brex-receiver/"
+    url_ngrok = "https://financialjobbitransaction-production.up.railway.app/api/webhooks/brex-receiver/"
     
     # 2. Los datos de la suscripción (El mismo Body de la documentación)
     payload = {
