@@ -14,16 +14,16 @@ class BrexClient:
 
     def __init__(self):
 # Esto calcula la ruta a la raíz del proyecto (un nivel arriba de Clients/)
-        base_dir = Path(__file__).resolve().parent.parent
-        env_path = base_dir / '.env'
+       # base_dir = Path(__file__).resolve().parent.parent
+       # env_path = base_dir / '.env'
         
         # Cargamos el archivo especificando la ruta exacta
-        load_dotenv(dotenv_path=env_path)
+        # load_dotenv(dotenv_path=env_path)
         
         token = os.getenv("BREX_TOK")
 
         if not token:
-            print(f"ERROR: No se encontró el .env en: {env_path}")
+            print(f"ERROR: No se encontró el .env")
         else:
             print(f"Token cargado correctamente")
             

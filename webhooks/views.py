@@ -28,10 +28,11 @@ def brex_webhook_receiver(request):
 
     # Lo convertis en un objeto listo para poder ingresar a la BD
     compra = costo_Total_webhook(payload)
+    gasto_individual = compra[0]
 
     #Procesas la transaccion, Agrega la compra, y registra el merchant, si no existe
     # Te devuelve un bool, si es nuevo merchant, el objeto merchant y el objeto expenses.
-    validador, merchant, Expense = procesar_transaccion(compra)
+    validador, merchant, Expense = procesar_transaccion(gasto_individual)
 
     # Si no se logra procesar el gasto, no hace nada del cogido
     if not merchant:
