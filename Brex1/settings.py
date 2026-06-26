@@ -114,18 +114,10 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 
-db_live = os.getenv("DB_LIVE")
+# db_live = os.getenv("DB_LIVE")
 
-if db_live in ['false', False]:
-    
-    DATABASES = {
-    'default': {
-       'ENGINE': 'django.db.backends.sqlite3', # Default sqllite  
-       'NAME': BASE_DIR / 'db.sqlite3',
-   }}
-    
-else: 
- DATABASES = {
+
+DATABASES = {
     'default': {
        'ENGINE': 'django.db.backends.postgresql', # Default PostgreSQL
         'NAME':   os.getenv('DB_NAME'),
