@@ -1,16 +1,12 @@
 import json
-from Clients.models import Merchant, Expense
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.utils import timezone
 from Clients.management.commands.ejecutar_auditoria import Auditoria
 from Clients.Gastos_ati.BaseZScoreAnalyzer import BaseZScoreAnalyzer
 from Clients.Brex_Postgre import costo_Total_webhook
 from Clients.Ingest_items import procesar_transaccion
 from datetime import datetime
 from Clients.Brex import BrexClient
-from Clients.management.commands.ejecutar_auditoria import Auditoria
-
 
 
 @csrf_exempt 

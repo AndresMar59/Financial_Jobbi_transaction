@@ -1,52 +1,8 @@
 from Clients.models import Merchant, Expense
 from Clients.Normalize import normalize_category, normalize_merchant_name, obtener_similar
-from Clients.Brex_Postgre import Costos_Total, Costo_Total_byExpense
+from Clients.Brex_Postgre import Costos_Total
 
-mock_gastos_recientes = [
-    {
-        "gasto_id": "fake_001",
-        "vendor_brex_id": "pmch_cln26otnw025w0oknbasksls4",
-        "amount": 49.00,
-        "date": "2026-04-20T00:00:00Z", # Obligatorio
-        "location": "loc_001",
-        "address": "Bogotá",
-        "mcc": "5411",
-        "anio": "2026",
-        "mes": "04",
-        "usuario": "Andres Martinez",
-        "category": "software", # Obligatorio
-        "name_vendor": "coresignal"
-    },
-    {
-        "gasto_id": "fake_002",
-        "vendor_brex_id": "NUEVO_999",
-        "amount": 1250.00,
-        "date": "2026-04-22T00:00:00Z",
-        "location": "loc_002",
-        "address": "Medellín",
-        "mcc": "5732",
-        "anio": "2026",
-        "mes": "04",
-        "usuario": "Felipe Clautier",
-        "category": "electronics",
-        "name_vendor": "algo super raro s.a.s"
-    },
-    {
-        "gasto_id": "fake_003",
-        "vendor_brex_id": "NUEVO_555",
-        "amount": 15.00,
-        "date": "2026-04-22T00:00:00Z",
-        "location": "loc_003",
-        "address": "Bogotá",
-        "mcc": "5812",
-        "anio": "2026",
-        "mes": "04",
-        "usuario": "Andres Martinez",
-        "category": "food & beverages",
-        "name_vendor": "tienda local bogota"
-    }
-]
-
+   
 
 
 

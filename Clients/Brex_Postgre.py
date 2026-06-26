@@ -3,7 +3,6 @@ from Clients.Brex import BrexClient
 from dotenv import load_dotenv
 
 load_dotenv()
-client = BrexClient()
 
 
 def Costos_Total():
@@ -13,6 +12,7 @@ def Costos_Total():
         "status": "APPROVED",
         "payment_status": "CLEARED"
     }
+    client = BrexClient()
     expenses_card = client.paginated("v1/expenses/card", params=parametros_expansion)
 
     if not isinstance(expenses_card, list):
@@ -80,7 +80,7 @@ def costo_diario():
         "purchased_at_start": fecha_iso,  # <-- CAMBIO CLAVE
         "status": "APPROVED"
     }
-    
+    client = BrexClient()
     expenses_card = client.paginated("v1/expenses/card", params=parametros_expansion)
 
     if not isinstance(expenses_card, list):
@@ -141,7 +141,7 @@ def Costo_Total_byExpense(id_expense):
         "status": "APPROVED",
         "payment_status": "CLEARED"
     }
-    
+    client = BrexClient()
     # Esto va a venir de Webhook el id_expenses
     expenses_card = client.paginated("v1/expenses/card/{id_expense}", params=parametros_expansion)
 
