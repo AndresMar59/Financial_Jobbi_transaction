@@ -57,12 +57,12 @@ class BaseZScoreAnalyzer:
             curr_monto = float(curr_monto or 0)
             curr_conteo = float(curr_conteo or 0)
 
-        # 3. Calcular ambos Z-Scores
         z_monto = self.calculate_z_score(curr_monto, hist_montos) if hist_montos else None
         z_frecuencia = self.calculate_z_score(curr_conteo, hist_conteos) if hist_conteos else None
 
-        if z_frecuencia or z_frecuencia == None:
-            return None
+         # Sin datos suficientes en alguno → no evaluamos
+        if z_monto is None or z_frecuencia is None:
+          return None
         
         avg_frecuencia = round(float(np.mean(hist_conteos)), 2) if hist_conteos else 0
         avg_monto = round(float(np.mean(hist_montos)), 2) if hist_montos else 0
@@ -77,7 +77,7 @@ class BaseZScoreAnalyzer:
             "avg_frecuencia": avg_frecuencia,
             "z_monto": z_monto,
             "z_frecuencia": z_frecuencia,
-            "alerta": (z_monto > 3.0 or z_frecuencia > 3.0) if z_monto and z_frecuencia else False
+            "alerta": z_monto > 3.0 or z_frecuencia > 3.0
             # alerta es un flag que se activa si alguno de los Z-Scores supera 2.0, indicando una posible anomalía
         }
     
@@ -116,7 +116,12 @@ class BaseZScoreAnalyzer:
     def analizar_gastos_unico(self, day_limit= int):    
         alertas_activas = []
 
-        analisis = self.evaluate_merchant(day_limit)        
+        analisis = self.evaluate_merchant(day_limit)    
+
+         # AGREGAR ESTA GUARDA:
+        if analisis is None:
+         return alertas_activas  # retorna lista vacía, no explota
+
         if analisis['alerta']:
             alertas_activas.append(analisis)
 

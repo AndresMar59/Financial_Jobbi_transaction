@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 from Clients.Brex import BrexClient
 from dotenv import load_dotenv
+from django.utils.dateparse import parse_datetime
+from django.utils import timezone
 
 load_dotenv()
 
@@ -225,13 +227,20 @@ def costo_Total_webhook(item):
     # Brex no incluye el objeto 'user' en este webhook. Ponemos 'unknown'
     usuario = "unknown"
         
-    # La fecha viene en formato ISO: "2023-01-01T00:00:00Z"
-    purchased_at = item.get("purchased_at", "0000-00-00")
+    raw_date = item.get("purchased_at", None)
+
+    if raw_date:
+     purchased_at = parse_datetime(raw_date)  
+
+    if purchased_at is None:
+        purchased_at = timezone.now()                # fallback seguro
+    else:
+     purchased_at = timezone.now()
         
     # 2. MONTO REAL: Estructura corregida para acceder a item['amount']['amount']
     amount_data = item.get("amount") or item.get("original_amount") or {} 
-    raw_amount = float(amount_data.get("amount", 0))
-
+    raw_amount = float(amount_data.get("amount", 0)) / 100  
+ 
     # Brex no manda location ni address directos, extraemos el país del merchant como parche seguro
     location_id = "unknown"
     address_state = merchant_obj.get("country", "unknown") # Usamos el país ya que no viene el estado

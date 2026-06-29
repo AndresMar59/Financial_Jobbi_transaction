@@ -50,7 +50,7 @@ def brex_webhook_receiver(request):
     evaluacion = client.analizar_gastos_unico(dia)
 
     # Si existe al menos un objeto de la lista ahcemos el proceso de bloqueo
-    if evaluacion[0]   :
+    if evaluacion:
         user = BrexClient()
 
         # creamos la variable que simplemente contendria la respuesta del request
