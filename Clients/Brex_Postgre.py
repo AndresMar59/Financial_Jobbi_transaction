@@ -230,12 +230,12 @@ def costo_Total_webhook(item):
     raw_date = item.get("purchased_at", None)
 
     if raw_date:
-     purchased_at = parse_datetime(raw_date)  
-
-    if purchased_at is None:
-        purchased_at = timezone.now()                # fallback seguro
+     purchased_at = parse_datetime(raw_date)
     else:
-     purchased_at = timezone.now()
+     purchased_at = None
+ 
+    if purchased_at is None:
+     purchased_at = timezone.now()  # fallback seguro
         
     # 2. MONTO REAL: Estructura corregida para acceder a item['amount']['amount']
     amount_data = item.get("amount") or item.get("original_amount") or {} 
@@ -246,20 +246,19 @@ def costo_Total_webhook(item):
     address_state = merchant_obj.get("country", "unknown") # Usamos el país ya que no viene el estado
 
     gastos_normalizados.append({
-        "gasto_id": gasto_id,
-        "vendor_brex_id": vendor_id,
-        "amount": raw_amount,
-        "date": purchased_at,
-        "location": location_id,
-        "address": address_state, 
-        "mcc": mcc, 
-        "anio": purchased_at[:4],      # Corta "2023" perfectamente
-        "mes": purchased_at[5:7],     # Corta "01" perfectamente
-        "usuario": usuario, 
-        "category": category, 
-        "name_vendor": name_vendor 
-    })
-    
+    "gasto_id": gasto_id,
+    "vendor_brex_id": vendor_id,
+    "amount": raw_amount,
+    "date": purchased_at,
+    "location": location_id,
+    "address": address_state, 
+    "mcc": mcc, 
+    "anio": purchased_at.year,
+    "mes": purchased_at.month,
+    "usuario": usuario, 
+    "category": category, 
+    "name_vendor": name_vendor 
+})
     return gastos_normalizados
     
 
