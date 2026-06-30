@@ -24,46 +24,29 @@ def brex_webhook_receiver(request):
 
     # Lo convertis en un objeto listo para poder ingresar a la BD
     compra = costo_Total_webhook(payload)
+
+    if not compra:
+        return JsonResponse({"status": "ignored", "reason": "estado no procesable"}, status=200)
+
     gasto_individual = compra[0]
 
-    #Procesas la transaccion, Agrega la compra, y registra el merchant, si no existe
-    # Te devuelve un bool, si es nuevo merchant, el objeto merchant y el objeto expenses.
     validador, merchant, Expense = procesar_transaccion(gasto_individual)
 
-    # Si no se logra procesar el gasto, no hace nada del cogido
     if not merchant:
-        return ("No se puedo procesar el registro de compra")
-    
+        return JsonResponse({"status": "error", "message": "No se pudo procesar el registro de compra"}, status=400)
 
-    # Seleccionamos el id del merchant que se asigna incrementalmente en la BD
     merchant_id = Expense[0].merchant_id
-
-    # Inicializas la clase de score con el merchant del gasto
-    client = BaseZScoreAnalyzer(merchant_id = merchant_id)
-
-
+    client = BaseZScoreAnalyzer(merchant_id=merchant_id)
     dia = datetime.now().day
-
-    # Creamos la evalucion de z-score sobre el gasto 
-    # 1. Debe haber al menos tres meses de gastos pasados de ese merchat
-    # 2. Tiene que tener un scroe demasiado alto para que se active
     evaluacion = client.analizar_gastos_unico(dia)
 
-    # Si existe al menos un objeto de la lista ahcemos el proceso de bloqueo
     if evaluacion:
         user = BrexClient()
-
-        # creamos la variable que simplemente contendria la respuesta del request
-
         bloqueo = user.bloquear_tarjeta_en_brex(card)
-
-        # Mandamos el esquema de respuesta de evalaucion para mandar mandar el correo 
-        # Ejecutamos la fucnion 
         Audi = Auditoria(alerta=evaluacion, dia=dia)
         Audi.handle()
-    
-    # Si no hay alerta solo crea el expense y el merchant si es nuevo.
-    return JsonResponse({"status": "success", "alert_triggered": bool(evaluacion[0])}, status=200)
-        
+
+    alert_triggered = bool(evaluacion) and bool(evaluacion[0])
+    return JsonResponse({"status": "success", "alert_triggered": alert_triggered}, status=200)
 
 
